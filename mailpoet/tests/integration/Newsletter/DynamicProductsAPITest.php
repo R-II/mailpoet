@@ -129,7 +129,6 @@ class DynamicProductsAPITest extends \MailPoetTest {
     $this->tester->createWordPressUser($email, $role, $username);
     $user = $this->wp->getUserBy("email", $email);
     wp_set_current_user($user->ID);
-    $this->createdUsers[] = $user;
 
     return $user;
   }
