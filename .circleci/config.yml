@@ -1071,6 +1071,7 @@ workflows:
           group: woo
           enable_hpos_sync: 1
           name: integration_test_woo_hpos_sync_on
+          use_wordpress_beta: true
           requires:
             - build
       - integration_tests:
@@ -1078,6 +1079,7 @@ workflows:
           group: woo
           name: integration_test_woo_hpos_on
           enable_hpos: 1
+          use_wordpress_beta: true
           requires:
             - build
       - integration_tests:
@@ -1085,6 +1087,7 @@ workflows:
           group: woo
           disable_hpos: 1
           name: integration_test_woo_hpos_off
+          use_wordpress_beta: true
           requires:
             - build
       - integration_tests:
@@ -1092,6 +1095,7 @@ workflows:
           skip_group: woo
           skip_plugins: 1
           name: integration_test_base
+          use_wordpress_beta: true
           requires:
             - build
       - acceptance_tests:
