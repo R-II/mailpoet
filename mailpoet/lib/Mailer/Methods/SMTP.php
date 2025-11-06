@@ -58,6 +58,13 @@ class SMTP extends PHPMailerMethod {
     $mailer->Host = $this->wp->applyFilters('mailpoet_mailer_smtp_host', $this->host); // phpcs:ignore Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
     /** @phpstan-ignore-next-line - we cannot annotate the return type from a filter */
     $mailer->Port = $this->wp->applyFilters('mailpoet_mailer_smtp_port', $this->port); // phpcs:ignore Squiz.NamingConventions.ValidVariableName.MemberNotCamelCaps
+
+    // Fix PHPMailer bad behaviour when encryption isn't set
+    if (empty($this->encryption)) {
+      $mailer->SMTPSecure = false;
+      $mailer->SMTPAutoTLS = false;
+    }
+    
     /** @phpstan-ignore-next-line - we cannot annotate the return type from a filter */
     $mailer->SMTPSecure = $this->wp->applyFilters('mailpoet_mailer_smtp_encryption', $this->encryption);
     /** @phpstan-ignore-next-line - we cannot annotate the return type from a filter */
