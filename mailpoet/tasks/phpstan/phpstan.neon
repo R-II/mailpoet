@@ -11,6 +11,7 @@ parameters:
     - ../../tests/_support/_generated/AcceptanceTesterActions.php
     - ../../tests/_support/_generated/IntegrationTesterActions.php
     - ../../tests/_support/_generated/UnitTesterActions.php
+    - ../../tasks/Php84DeprecationsFix.php
   scanDirectories:
     - ../../tests/_support
     - ../../tests/acceptance
@@ -22,11 +23,12 @@ parameters:
     - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
     - custom-stubs.php
   inferPrivatePropertyTypeFromConstructor: true
-  checkGenericClassInNonGenericObjectType: false
   parallel:
     processTimeout: 300.0
-    maximumNumberOfProcesses: 3 # Static analysis is running on Circle CI medium+ that has 3 CPUs
+    maximumNumberOfProcesses: 2 # Static analysis is running on Circle CI medium+ that has 3 CPUs, but runs out of memory with 3 processes
   ignoreErrors:
+    - identifier: missingType.iterableValue
+    - identifier: missingType.generics
     - '#Function members_register_.+ not found#'
     - '#Argument of an invalid type MailPoetVendor\\pQuery\\IQuery supplied for foreach, only iterables are supported#'
 
@@ -67,11 +69,6 @@ parameters:
       count: 1
       path: ../../lib/Logging/PluginVersionProcessor.php
     -
-      # WP annotates parameter as callable, but passes empty string as a default.
-      message: '/function add_(sub)?menu_page expects callable\(\): mixed, ''''\|\(callable\(\): mixed\) given/'
-      count: 1
-      path: ../../lib/WP/Functions.php
-    -
       # We don't allow seting properties for read-only entity WpPostEntity
       message: '#^Property MailPoet\\Entities\\WpPostEntity::\$postTitle is never written, only read\.$#'
       count: 1
@@ -85,7 +82,6 @@ parameters:
     objectManagerLoader: create-entity-manager.php
 
   # exclude level 6 errors
-  checkMissingIterableValueType: false
   treatPhpDocTypesAsCertain: false # We have some incorrect phpdoc types, but I want to address them later
 
   excludePaths:

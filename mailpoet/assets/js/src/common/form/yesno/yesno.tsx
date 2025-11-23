@@ -1,5 +1,6 @@
 import { InputHTMLAttributes } from 'react';
 import classnames from 'classnames';
+import { __ } from '@wordpress/i18n';
 import { yesIcon } from './icons/yes';
 import { noIcon } from './icons/no';
 
@@ -29,6 +30,7 @@ export function YesNo({
     >
       <label>
         <input
+          aria-label={__('Yes', 'mailpoet')}
           type="radio"
           checked={checked === true}
           onChange={() => onCheck(true)}
@@ -40,6 +42,7 @@ export function YesNo({
       </label>
       <label>
         <input
+          aria-label={__('No', 'mailpoet')}
           type="radio"
           checked={checked === false}
           onChange={() => onCheck(false)}

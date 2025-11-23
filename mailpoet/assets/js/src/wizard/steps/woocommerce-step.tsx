@@ -68,17 +68,6 @@ function WizardWooCommerceStep({
         <div>
           {showCustomersImportSetting ? (
             <div className="mailpoet-wizard-woocommerce-option">
-              <div className="mailpoet-wizard-woocommerce-toggle">
-                <YesNo
-                  showError={submitted && importType === null}
-                  checked={importTypeChecked}
-                  onCheck={(value) =>
-                    setImportType(value ? 'subscribed' : 'unsubscribed')
-                  }
-                  name="mailpoet_woocommerce_import_type"
-                  automationId="woocommerce_import_type"
-                />
-              </div>
               <div>
                 <p>
                   {ReactStringReplace(
@@ -108,18 +97,21 @@ function WizardWooCommerceStep({
                   )}
                 </div>
               </div>
+
+              <div className="mailpoet-wizard-woocommerce-toggle">
+                <YesNo
+                  showError={submitted && importType === null}
+                  checked={importTypeChecked}
+                  onCheck={(value) =>
+                    setImportType(value ? 'subscribed' : 'unsubscribed')
+                  }
+                  name="mailpoet_woocommerce_import_type"
+                  automationId="woocommerce_import_type"
+                />
+              </div>
             </div>
           ) : null}
           <div className="mailpoet-wizard-woocommerce-option">
-            <div className="mailpoet-wizard-woocommerce-toggle">
-              <YesNo
-                showError={submitted && allowed === null}
-                checked={allowed}
-                onCheck={(value) => setAllowed(value)}
-                name="mailpoet_woocommerce_tracking"
-                automationId="woocommerce_tracking"
-              />
-            </div>
             <div>
               <p>
                 {ReactStringReplace(
@@ -148,6 +140,16 @@ function WizardWooCommerceStep({
                   'mailpoet',
                 )}
               </div>
+            </div>
+
+            <div className="mailpoet-wizard-woocommerce-toggle">
+              <YesNo
+                showError={submitted && allowed === null}
+                checked={allowed}
+                onCheck={(value) => setAllowed(value)}
+                name="mailpoet_woocommerce_tracking"
+                automationId="woocommerce_tracking"
+              />
             </div>
           </div>
         </div>

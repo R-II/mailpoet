@@ -13,9 +13,10 @@ const keywords = [
 export const step: StepType = {
   key: 'woocommerce:order-completed',
   group: 'triggers',
+  // translators: automation trigger title
   title: () => __('Order completed', 'mailpoet'),
   description: () =>
-    __('Start the automation when an order is completed.', 'mailpoet'),
+    __('Starts when an order is marked as completed.', 'mailpoet'),
   subtitle: () => _x('Trigger', 'noun', 'mailpoet'),
   keywords,
   foreground: '#2271b1',

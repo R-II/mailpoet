@@ -420,8 +420,110 @@ class ShortcodesTest extends \MailPoetTest {
     verify($result[0])->equals('[link:shortcode]');
   }
 
+  public function testItPassesArgumentsToCustomLinkShortcodesInClickTracking() {
+    $linkCategory = $this->diContainer->get(\MailPoet\Newsletter\Shortcodes\Categories\Link::class);
+
+    // Set up a custom filter that expects arguments
+    remove_all_filters('mailpoet_newsletter_shortcode_link');
+    $argumentsReceived = null;
+    add_filter('mailpoet_newsletter_shortcode_link', function($shortcode, $newsletter, $subscriber, $queue, $arguments, $wpUserPreview) use (&$argumentsReceived) {
+      $argumentsReceived = $arguments;
+      if ($shortcode === '[link:express_login]') {
+        return 'https://example.com/express-login?token=xyz&valid_for=' . ($arguments['valid_for'] ?? 'missing');
+      }
+      return $shortcode;
+    }, 10, 6);
+
+    // Test the processShortcodeAction method (used during click tracking for URL fields)
+    $shortcodeWithArgs = '[link:express_login valid_for="1month" link="https://example.com/checkout"]';
+    $result = $linkCategory->processShortcodeAction(
+      $shortcodeWithArgs,
+      $this->newsletter,
+      $this->subscriber,
+      null,
+      false
+    );
+
+    verify($argumentsReceived)->isArray();
+    verify($argumentsReceived)->arrayHasKey('valid_for');
+    verify($argumentsReceived['valid_for'])->equals('1month');
+    verify($argumentsReceived)->arrayHasKey('link');
+    verify($argumentsReceived['link'])->equals('https://example.com/checkout');
+    verify($result)->equals('https://example.com/express-login?token=xyz&valid_for=1month');
+  }
+
+  public function testItStripsQuotesFromShortcodeArguments() {
+    // Test that quotes are properly stripped from attribute values
+    $linkCategory = $this->diContainer->get(\MailPoet\Newsletter\Shortcodes\Categories\Link::class);
+
+    remove_all_filters('mailpoet_newsletter_shortcode_link');
+    $argumentsReceived = null;
+    add_filter('mailpoet_newsletter_shortcode_link', function($shortcode, $newsletter, $subscriber, $queue, $arguments, $wpUserPreview) use (&$argumentsReceived) {
+      $argumentsReceived = $arguments;
+      if ($shortcode === '[link:test_link]') {
+        $token = $arguments['token'] ?? 'default';
+        return "https://example.com/test?token={$token}";
+      }
+      return $shortcode;
+    }, 10, 6);
+
+    // Test with regular double quotes
+    $result = $linkCategory->processShortcodeAction(
+      '[link:test_link token="abc123"]',
+      $this->newsletter,
+      $this->subscriber,
+      null,
+      false
+    );
+
+    verify($argumentsReceived)->isArray();
+    verify($argumentsReceived['token'])->equals('abc123');
+    verify($result)->equals('https://example.com/test?token=abc123');
+
+    // Test with HTML-encoded quotes (as it appears when extracted from HTML)
+    $result2 = $linkCategory->processShortcodeAction(
+      '[link:test_link token=&quot;abc123&quot;]',
+      $this->newsletter,
+      $this->subscriber,
+      null,
+      false
+    );
+
+    verify($argumentsReceived['token'])->equals('abc123');
+    verify($result2)->equals('https://example.com/test?token=abc123');
+  }
+
+  public function testItSupportsMailPoetPipeSyntaxForArguments() {
+    // Test MailPoet-style pipe syntax: [link:action | argument:value]
+    $linkCategory = $this->diContainer->get(\MailPoet\Newsletter\Shortcodes\Categories\Link::class);
+
+    remove_all_filters('mailpoet_newsletter_shortcode_link');
+    $argumentsReceived = null;
+    add_filter('mailpoet_newsletter_shortcode_link', function($shortcode, $newsletter, $subscriber, $queue, $arguments, $wpUserPreview) use (&$argumentsReceived) {
+      $argumentsReceived = $arguments;
+      if ($shortcode === '[link:test_pipe]') {
+        $token = $arguments['token'] ?? 'default';
+        return "https://example.com/pipe?token={$token}";
+      }
+      return $shortcode;
+    }, 10, 6);
+
+    // Test MailPoet pipe syntax
+    $result = $linkCategory->processShortcodeAction(
+      '[link:test_pipe | token:pipe123]',
+      $this->newsletter,
+      $this->subscriber,
+      null,
+      false
+    );
+
+    verify($argumentsReceived)->isArray();
+    verify($argumentsReceived['token'])->equals('pipe123');
+    verify($result)->equals('https://example.com/pipe?token=pipe123');
+  }
+
   public function testItCanProcessSiteTitleShortcode() {
-    $siteName = 'Test site name with characters like ’, <, >, &';
+    $siteName = "Test site name with characters like ', <, >, &";
     update_option('blogname', $siteName);
 
     $shortcode = '[site:title]';

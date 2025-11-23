@@ -20,6 +20,7 @@ const keywords = [
 export const step: StepType = {
   key: 'mailpoet:send-email',
   group: 'actions',
+  // translators: automation action title
   title: (data, context) => {
     if (context !== 'automation') {
       return __('Send email', 'mailpoet');
@@ -35,7 +36,7 @@ export const step: StepType = {
   description: (data) => {
     const text = (
       <span className="mailpoet-sendemail-description-main">
-        {__('An email will be sent to subscriber.', 'mailpoet')}
+        {__('Send an email to the subscriber.', 'mailpoet')}
       </span>
     );
     if (isTransactional(data)) {

@@ -43,19 +43,6 @@ function WelcomeWizardUsageTrackingStep({ loading, submitForm }) {
             id="mailpoet-wizard-3rd-party-libs"
             className="mailpoet-wizard-woocommerce-option"
           >
-            <div className="mailpoet-wizard-woocommerce-toggle">
-              <YesNo
-                showError={submitted && isNullOrUndefined(state.libs3rdParty)}
-                onCheck={(value) => {
-                  const newState = {
-                    libs3rdParty: value,
-                  };
-                  setState((prevState) => ({ ...prevState, ...newState }));
-                }}
-                checked={state.libs3rdParty}
-                name="mailpoet_libs_3rdParty"
-              />
-            </div>
             <div>
               <p>
                 {__(
@@ -83,6 +70,20 @@ function WelcomeWizardUsageTrackingStep({ loading, submitForm }) {
                 )}
               </div>
             </div>
+
+            <div className="mailpoet-wizard-woocommerce-toggle">
+              <YesNo
+                showError={submitted && isNullOrUndefined(state.libs3rdParty)}
+                onCheck={(value) => {
+                  const newState = {
+                    libs3rdParty: value,
+                  };
+                  setState((prevState) => ({ ...prevState, ...newState }));
+                }}
+                checked={state.libs3rdParty}
+                name="mailpoet_libs_3rdParty"
+              />
+            </div>
           </div>
 
           <div className="mailpoet-gap" />
@@ -91,19 +92,6 @@ function WelcomeWizardUsageTrackingStep({ loading, submitForm }) {
             id="mailpoet-wizard-tracking"
             className="mailpoet-wizard-woocommerce-option"
           >
-            <div className="mailpoet-wizard-woocommerce-toggle">
-              <YesNo
-                showError={submitted && isNullOrUndefined(state.tracking)}
-                onCheck={(value) => {
-                  const newState = {
-                    tracking: value,
-                  };
-                  setState((prevState) => ({ ...prevState, ...newState }));
-                }}
-                checked={state.tracking}
-                name="mailpoet_tracking"
-              />
-            </div>
             <div>
               <p>{__('Help improve MailPoet', 'mailpoet')}</p>
               <div className="mailpoet-wizard-note">
@@ -125,6 +113,20 @@ function WelcomeWizardUsageTrackingStep({ loading, submitForm }) {
                   ),
                 )}
               </div>
+            </div>
+
+            <div className="mailpoet-wizard-woocommerce-toggle">
+              <YesNo
+                showError={submitted && isNullOrUndefined(state.tracking)}
+                onCheck={(value) => {
+                  const newState = {
+                    tracking: value,
+                  };
+                  setState((prevState) => ({ ...prevState, ...newState }));
+                }}
+                checked={state.tracking}
+                name="mailpoet_tracking"
+              />
             </div>
           </div>
         </div>

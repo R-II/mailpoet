@@ -112,12 +112,12 @@ export function NewsletterTypes({
         onClick={createStandardNewsletter}
         isBusy={isCreating === 'standard'}
         disabled={isCreating !== null}
+        aria-label={__('Create Newsletter', 'mailpoet')}
         data-automation-id="create_standard"
       >
         {__('Create', 'mailpoet')}
       </Button>
       <Dropdown
-        focusOnMount={false}
         className="mailpoet-dropdown-button"
         contentClassName="mailpoet-dropdown-button-content"
         popoverProps={{ placement: 'bottom-end' }}
@@ -129,6 +129,7 @@ export function NewsletterTypes({
             isBusy={isCreating === 'standard'}
             disabled={isCreating !== null}
             aria-expanded={isOpen}
+            aria-label={__('Choose editor version', 'mailpoet')}
             data-automation-id="create_standard_email_dropdown"
           >
             <Icon icon={chevronDown} size={24} />
@@ -196,6 +197,7 @@ export function NewsletterTypes({
           onClick={createAutomation}
           isBusy={isCreating === 'automation'}
           disabled={isCreating !== null}
+          aria-label={__('Create Automation', 'mailpoet')}
           data-automation-id="create_automation"
         >
           {__('Create', 'mailpoet')}
@@ -217,6 +219,7 @@ export function NewsletterTypes({
           onClick={createNotificationNewsletter}
           isBusy={isCreating === 'notification'}
           disabled={isCreating !== null}
+          aria-label={__('Create Latest Post Notification', 'mailpoet')}
           data-automation-id="create_notification"
         >
           {__('Create', 'mailpoet')}
@@ -236,7 +239,8 @@ export function NewsletterTypes({
           onClick={createReEngagementNewsletter}
           isBusy={isCreating === 're_engagement'}
           disabled={isCreating !== null}
-          data-automation-id="create_notification"
+          aria-label={__('Create Re-engagement Email', 'mailpoet')}
+          data-automation-id="create_re_engagement"
         >
           {__('Create', 'mailpoet')}
         </Button>
