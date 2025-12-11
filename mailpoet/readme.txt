@@ -1,9 +1,9 @@
 === MailPoet - Newsletters, Email Marketing, and Automation ===
 Contributors: mailpoet, woocommerce, automattic
 Tags: email marketing, post notification, woocommerce emails, email automation, newsletter
-Requires at least: 6.7
-Tested up to: 6.8
-Stable tag: 5.17.0
+Requires at least: 6.8
+Tested up to: 6.9
+Stable tag: 5.17.3
 Requires PHP: 7.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -227,9 +227,8 @@ Check our [Knowledge Base](https://kb.mailpoet.com) or contact us through our [s
 
 == Changelog ==
 
-= 5.17.0 - 2025-11-10 =
-* Improved: Titles and descriptions for automation triggers and actions;
-* Fixed: Fix custom link shortcodes with arguments not working in URL fields (buttons);
-* Updated: Update the Email Editor JS package to version 1.4.0 to resolve a conflict with the latest version of the Gutenberg plugin.
+= 5.17.3 - 2025-12-08 =
+* Added: Ability to cancel an automation run for a single subscriber;
+* Updated: Bump the minimum required WordPress version to 6.8 and tested up to version to 6.9.
 
 [See the changelog for all versions.](https://github.com/mailpoet/mailpoet/blob/trunk/mailpoet/changelog.txt)

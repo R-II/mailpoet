@@ -24,7 +24,7 @@ export function Captcha() {
     'captcha',
     'recaptcha_invisible_secret_token',
   );
-  const hasBuiltInCaptcha = useSelector('isBuiltInCaptchaSupported')();
+  const hasBuiltInCaptcha = useSelector('isBuiltInCaptchaSupported');
   const setErrorFlag = useAction('setErrorFlag');
   const missingRecaptchaCheckboxToken =
     type === 'recaptcha' && recaptchaCheckboxToken.trim() === '';
@@ -65,7 +65,7 @@ export function Captcha() {
               {t('readMore')}
             </a>
             {(type === 'recaptcha' || type === 'recaptcha-invisible') && (
-              <p>
+              <span>
                 <span>{t('reCaptchaDescription')} </span>
                 <a
                   className="mailpoet-link"
@@ -75,7 +75,7 @@ export function Captcha() {
                 >
                   {t('signupForCaptchaKey')}
                 </a>
-              </p>
+              </span>
             )}
           </>
         }

@@ -1,8 +1,9 @@
 import { useCallback } from 'react';
+import { useSelect } from '@wordpress/data';
 import { Settings } from '../types';
-import { useSelector } from './use-selector';
 import { ValueAndSetter } from './types';
 import { useAction } from './use-actions';
+import { STORE_NAME } from '../store-name';
 /**
  * Takes the path of a setting (ie. key1, key2, key3,...) and returns an array with two items:
  * the first is the setting value and the second is a setter for that setting.
@@ -29,13 +30,22 @@ export function useSetting<
   key3: Key3,
 ): ValueAndSetter<Settings[Key1][Key2][Key3]>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useSetting(...path: string[]): [any, (value: any) => any] {
-  const getValue = useSelector('getSetting');
+export function useSetting(
+  ...path: string[]
+): [unknown, (value: unknown) => void] {
+  const pathString = JSON.stringify(path);
+
+  const settingsValue = useSelect(
+    (select) => select(STORE_NAME).getSetting(path),
+    [pathString],
+  );
+
   const setValue = useAction('setSetting');
-  return [
-    getValue(path),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useCallback((value) => setValue(path, value), path),
-  ];
+
+  const setterCallback = useCallback(
+    (value: unknown) => setValue(path, value),
+    [setValue, pathString], // eslint-disable-line react-hooks/exhaustive-deps -- path is captured but tracked via pathString to avoid reference changes
+  );
+
+  return [settingsValue, setterCallback];
 }
